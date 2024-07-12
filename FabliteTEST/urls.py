@@ -17,6 +17,9 @@ Including another URLconf
 from django.urls import path, include
 from user import urls as user_urls
 urlpatterns = [
+    # Все созданные в приложении маршруты
     path('api/', include(user_urls, namespace='api')),
+    # Маршруты для создания пользователя
+    # See https://djoser.readthedocs.io/en/latest/base_endpoints.html
     path('auth/', include('djoser.urls')),
 ]

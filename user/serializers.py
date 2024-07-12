@@ -2,8 +2,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
+# Получаем модель пользователя
 User = get_user_model()
 class UsersForAdminSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для администрации (superuser), показывает всю информацию из базы данных кроме пароля
+    """
     def create(self, validated_data):
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
@@ -17,6 +21,9 @@ class UsersForAdminSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {'write_only': True}}
 
 class UsersForUserSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для авторизированных пользователей, показывает только нужную информацию
+    """
     class Meta:
         model = User
         fields = ("id", "username", "first_name", "last_name", "email", "is_active", "is_staff")
